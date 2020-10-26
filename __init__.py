@@ -1,1 +1,1 @@
-from .client import HiveClient, VariableScope, GotoCommand
+from .client import HiveClient, VariableScope, GotoCommand, TriggerInterruptCommand
