@@ -189,7 +189,7 @@ class TriggerInterruptCommand(Command):
         self.interrupt = interrupt
 
     def add_arguments(self, command):
-        command['interrupt'] = self.destination
+        command['interrupt'] = self.interrupt
 
     def command_type(self): # pylint: disable=no-self-use
         return 'trigger-interrupt'
