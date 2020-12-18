@@ -14,7 +14,7 @@ import requests
 
 class HiveError(Exception):
     def __init__(self, value):
-        super(HiveError, self).__init__(value)
+        super(HiveError, self).__init__(value) # pylint: disable=super-with-arguments
 
         self.value = value
 
@@ -34,7 +34,7 @@ def post_request_with_retries(url, payload, logger, max_retry_duration=120, init
             else:
                 query = requests.post(url, data=payload)
 
-            if query.status_code == requests.codes.ok:
+            if query.status_code == requests.codes.ok: # pylint: disable=no-else-return
                 return query
             elif query.status_code >= 400:
                 last_error = HiveError(url + ' returned ' + str(query.status_code))
@@ -72,7 +72,7 @@ class VariableScope(Enum):
     player = 'player'
     session = 'session'
 
-class HiveClient(object):
+class HiveClient(object): # pylint: disable=useless-object-inheritance
     def __init__(self, **kwargs):
         self.api_url = kwargs['api_url']
         self.token = None
@@ -120,11 +120,11 @@ class HiveClient(object):
     def issue_command(self, command, player=None):
         return self.issue_commands([command], player)
 
-    def fetch_variable(self, variable_name, player=None, default=None, scope='game'):
+    def fetch_variable(self, variable_name, player=None, default=None, scope=VariableScope.game):
         payload = {
             'token': self.token,
             'name': variable_name,
-            'scope': scope
+            'scope': scope.value
         }
 
         if player is not None:
@@ -150,8 +150,8 @@ class HiveClient(object):
         return self.api_url + endpoint
 
 
-class Command(object):
-    def __init__(self, **kwargs):
+class Command(object): # pylint: disable=useless-object-inheritance
+    def __init__(self, **kwargs): # pylint: disable=super-with-arguments
         pass
 
     def to_dict(self):
@@ -172,7 +172,7 @@ class Command(object):
 
 class GotoCommand(Command):
     def __init__(self, destination, **kwargs):
-        super(GotoCommand, self).__init__(**kwargs)
+        super(GotoCommand, self).__init__(**kwargs) # pylint: disable=super-with-arguments
 
         self.destination = destination
 
@@ -184,7 +184,7 @@ class GotoCommand(Command):
 
 class TriggerInterruptCommand(Command):
     def __init__(self, interrupt, **kwargs):
-        super(TriggerInterruptCommand, self).__init__(**kwargs)
+        super(TriggerInterruptCommand, self).__init__(**kwargs) # pylint: disable=super-with-arguments
 
         self.interrupt = interrupt
 
@@ -193,3 +193,19 @@ class TriggerInterruptCommand(Command):
 
     def command_type(self): # pylint: disable=no-self-use
         return 'trigger-interrupt'
+
+class SetVariableCommand(Command):
+    def __init__(self, name, value, scope, **kwargs):
+        super(SetVariableCommand, self).__init__(**kwargs) # pylint: disable=super-with-arguments
+
+        self.name = name
+        self.value = value
+        self.scope = scope.value
+
+    def add_arguments(self, command):
+        command['scope'] = self.scope
+        command['variable'] = self.name
+        command['value'] = self.value
+
+    def command_type(self): # pylint: disable=no-self-use
+        return 'set-variable'

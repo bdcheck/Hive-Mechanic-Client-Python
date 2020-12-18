@@ -1,3 +1,3 @@
-# pylint: disable=invalid-name
+# pylint: disable=invalid-name, line-too-long
 
-from .client import HiveClient, VariableScope, GotoCommand, TriggerInterruptCommand
+from .client import HiveClient, VariableScope, GotoCommand, TriggerInterruptCommand, SetVariableCommand
