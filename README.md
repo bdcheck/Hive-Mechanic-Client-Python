@@ -92,7 +92,7 @@ Parameters:
 
 ## Client library methods
 
-`new HiveClient(api_url, token, timeout, logger)`: Creates a new `HiveClient` instance.
+`client = new HiveClient(api_url, token, timeout, logger)`: Creates a new `HiveClient` instance.
 
 Parameters:
 
@@ -103,7 +103,7 @@ Parameters:
 
 ---
 
-`issue_commands(commands, player)`: Transmits a series of commands to the remote Hive Mechanic installation.
+`client.issue_commands(commands, player)`: Transmits a series of commands to the remote Hive Mechanic installation.
 
 Parameters
 
@@ -112,9 +112,20 @@ Parameters
 
 ---
 
-`issue_command(command, player)`: Transmits one command to the remote Hive Mechanic installation. This is a convenience method for `issue_commands`.
+`client.issue_command(command, player)`: Transmits one command to the remote Hive Mechanic installation. This is a convenience method for `issue_commands`.
 
 Parameters
 
 * `command` (required): A command object (see above) instantiated with the relevant arguments.
 * `player`: Specified player to use when executing the commands on the server. If the player does not exist, the remote server may or may not create a new player and session for the activity. (This parameter is configured when creating the HTTP Integration on the server side.)
+
+---
+
+`client.fetch_variable(variable, player, default, scope)`: Synchronously retrieves a variable from the server mapped to the provided parameters.
+
+Parameters
+
+* `variable` (required): Remote variable name
+* `player`: Specified player to use retrieving player- or session-scoped variables. (Default: `None`)
+* `default`: Fallback value to provide if the variable is not available on the server or has not been set. (Default: `None`)
+* `scope`: Specified scope to search for variable. May be one of `VariableScope.game`, `VariableScope.player`, or `VariableScope.session`. (Default: `VariableScope.game`)
