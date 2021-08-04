@@ -35,7 +35,7 @@ The following lines illustrate how to use the library:
 
     from hive_client import HiveClient, VariableScope, TriggerInterruptCommand, SetVariableCommand
 
-    client = HiveClient('https://my-site.example.com/http/', token='api-client-shared-secret')
+    client = HiveClient(api_url='https://my-site.example.com/http/', token='api-client-shared-secret')
     
 The lines above import the relevant modules into the local namespace and create a `HiveClient` object that will mediate access to the remote API.
 
