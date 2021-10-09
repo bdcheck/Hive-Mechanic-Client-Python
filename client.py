@@ -68,9 +68,9 @@ def post_request_with_retries(url, payload, logger, max_retry_duration=120, init
     raise Exception('Unknown error occurred.')
 
 class VariableScope(Enum):
-    game = 'game'
-    player = 'player'
-    session = 'session'
+    Game = 'game'
+    Player = 'player'
+    Session = 'session'
 
 class HiveClient(object): # pylint: disable=useless-object-inheritance
     def __init__(self, **kwargs):
@@ -120,7 +120,7 @@ class HiveClient(object): # pylint: disable=useless-object-inheritance
     def issue_command(self, command, player=None):
         return self.issue_commands([command], player)
 
-    def fetch_variable(self, variable_name, player=None, default=None, scope=VariableScope.game):
+    def fetch_variable(self, variable_name, player=None, default=None, scope=VariableScope.Game):
         payload = {
             'token': self.token,
             'name': variable_name,
